@@ -53,6 +53,7 @@ jobs:
 
           NEW_TAG=$(echo $GITHUB_SHA | cut -c1-7)
           sed -i "s|atos06/gke-vue\(:[a-zA-Z0-9_.-]*\)\?|atos06/gke-vue:${NEW_TAG}|g" frontend.deployment.yaml
+          cat frontend.deployment.yaml
           sed -i "s|atos06/gke-api-node\(:[a-zA-Z0-9_.-]*\)\?|atos06/gke-api-node:${NEW_TAG}|g" api.deployment.yaml
           git config --global user.name "GitHub Actions"
           git config --global user.email "github-actions@example.com"
