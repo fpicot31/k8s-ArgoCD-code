@@ -49,7 +49,7 @@ jobs:
           eval $(ssh-agent -s)
           ssh-add - <<< "${{ secrets.GH_SSH_KEY }}"
           git clone git@github.com:fpicot31/k8s-ArgoCD-infra.git
-          cd k8s
+          cd k8s-ArgoCD-infra/k8s
 
           NEW_TAG=$(echo $GITHUB_SHA | cut -c1-7)
           sed -i "s|atos06/gke-vue\(:[a-zA-Z0-9_.-]*\)\?|atos06/gke-vue:${NEW_TAG}|g" frontend.deployment.yaml
