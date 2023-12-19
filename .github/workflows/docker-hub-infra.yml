@@ -57,5 +57,5 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "github-actions@example.com"
           git add .
-          git commit -m "Mise à jour des versions des images dans les déploiements Kubernetes à ${NEW_TAG}"
+          git commit -m "Mise à jour des versions des images dans les déploiements Kubernetes à $NEW_TAG"
           git push origin main
