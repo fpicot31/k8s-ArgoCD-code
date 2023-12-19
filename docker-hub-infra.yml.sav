@@ -43,16 +43,10 @@ jobs:
       needs: build_and_push
       runs-on: ubuntu-latest
       steps:
-      - name: Create SSH key
-        env:
-          SSH_PRIVATE_KEY: ${{secrets.GH_SSH_KEY}}
-        run: |
-          echo "$SSH_PRIVATE_KEY" > private.key
-          sudo chmod 400 private.key
       - name: Mettre à jour les déploiements Kubernetes
         run: |
           eval $(ssh-agent -s)
-          ssh-add private.key
+          ssh-add - <<< "${{ secrets.GH_SSH_KEY }}"
           git clone git@github.com:fpicot31/k8s-ArgoCD-infra.git
           cd k8s-ArgoCD-infra/k8s
 
