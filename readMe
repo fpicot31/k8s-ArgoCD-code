@@ -1,0 +1,22 @@
+
+
+# Tester l'application qui aune application front vue et une application backend node qui fournit l'API
+cd vue-jwt/frontend
+npm install
+npm run dev
+
+cd vue-jwt/server
+npm install express
+npm start
+
+http://localhost:5173/
+
+
+# Creation  des images sur dockerhub
+cd vue-jwt/frontend
+docker build -t atos06/gke-vue .
+docker push atos06/gke-vue 
+
+cd vue-jwt/node-api
+docker build -t atos06/gke-node-api .
+docker push atos06/gke-node-api
