@@ -43,7 +43,7 @@ jobs:
       needs: build_and_push
       runs-on: ubuntu-latest
       steps:
-      - name: Mettre à jour les déploiements Kubernetes
+      - name: Mettre à jourles déploiements Kubernetes
         run: |
           eval $(ssh-agent -s)
           mkdir -p $HOME/.ssh
