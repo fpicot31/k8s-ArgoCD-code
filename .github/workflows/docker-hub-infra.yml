@@ -45,10 +45,10 @@ jobs:
       steps:
         - uses: actions/checkout@v3
           with:
-            repository: fpicot31/k8s-ArgoCD-infra
+            repository: fpicot31/k8s-ArgoCD-code
             ref: 'main'
             token: ${{ secrets.GH_SSH_KEY }}
-        - name: set up confi
+        - name: deploy infra
           run: /
             NEW_TAG=$(echo $GITHUB_SHA | cut -c1-7)
             sed -i "s|atos06/gke-vue\(:[a-zA-Z0-9_.-]*\)\?|atos06/gke-vue:${NEW_TAG}|g" k8s/frontend.deployment.yaml
