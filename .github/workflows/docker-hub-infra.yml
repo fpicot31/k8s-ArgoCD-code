@@ -48,6 +48,7 @@ jobs:
           eval $(ssh-agent -s)
           mkdir -p $HOME/.ssh
           echo "${{secrets.GH_SSH_KEY}}" > $HOME/.ssh/private.key
+          chmod 600 $HOME/.ssh/private.key
           ssh-add $HOME/.ssh/private.key
 
           git clone git@github.com:fpicot31/k8s-ArgoCD-infra.git
