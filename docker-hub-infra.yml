@@ -46,10 +46,7 @@ jobs:
       - name: Mettre à jour les déploiements Kubernetes
         run: |
           eval $(ssh-agent -s)
-          mkdir -p $HOME/.ssh
-          echo "${{secrets.GH_SSH_KEY}}" > $HOME/.ssh/private.key
-          ssh-add $HOME/.ssh/private.key
-
+          ssh-add - <<< "${{ secrets.GH_SSH_KEY }}"
           git clone git@github.com:fpicot31/k8s-ArgoCD-infra.git
           cd k8s-ArgoCD-infra/k8s
 
