@@ -43,7 +43,7 @@ jobs:
       needs: build_and_push
       runs-on: ubuntu-latest
       steps:
-      - name: Mettre à jour les déploiements Kubernetes
+      - name: Mettre à jour les déploiements kKubernetes
         uses: actions/checkout@v3
         run: |
           NEW_TAG=$(echo $GITHUB_SHA | cut -c1-7)
