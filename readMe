@@ -20,3 +20,8 @@ docker push atos06/gke-vue
 cd vue-jwt/node-api
 docker build -t atos06/gke-node-api .
 docker push atos06/gke-node-api
+
+# mise en place du CI/CD
+# faire un commit qui declenchera le github action docker-hub-infra.yml etrepo k8s-ArgoCD-code
+# ne pas oublier d'aller dans onglet setting->action->general->workflow permissions : selectionner Read write permissions
+
