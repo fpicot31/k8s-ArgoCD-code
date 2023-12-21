@@ -45,7 +45,7 @@ jobs:
       steps:
       - name: Checkout do code
         uses: actions/checkout@v3
-      - name: Mettre à jour les déploiements Kubernetes
+      - name: Mettre à jour les déploiements  Kubernetes
         run: |
           NEW_TAG=$(echo $GITHUB_SHA | cut -c1-7)
           sed -i "s|atos06/gke-vue\(:[a-zA-Z0-9_.-]*\)\?|atos06/gke-vue:${NEW_TAG}|g" k8s/frontend.deployment.yaml
