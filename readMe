@@ -25,3 +25,8 @@ docker push atos06/gke-node-api
 # faire un commit qui declenchera le github action docker-hub-infra.yml etrepo k8s-ArgoCD-code
 # ne pas oublier d'aller dans onglet setting->action->general->workflow permissions : selectionner Read write permissions
 
+
+# si on veut tester le container dockerhub. Par exemple
+docker run --rm -d --name test1 -p 8085:80  atos06/gke-vue:d26b1a7
+# puis localhost:8085
+
