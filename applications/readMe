@@ -1,0 +1,16 @@
+
+# Creation  des images sur dockerhub
+cd applications/frontend
+docker build -t atos06/gke-vue .
+docker push atos06/gke-vue 
+
+cd applications/node-api
+docker build -t atos06/gke-node-api .
+docker push atos06/gke-node-api
+
+
+# mise en place du CI/CD
+# faire un commit qui declenchera le github action docker-hub-infra.yml etrepo k8s-ArgoCD-code
+# dans github, ne pas oublier d'aller dans onglet setting->action->general->workflow permissions : selectionner Read write permissions
+
+
