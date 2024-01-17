@@ -79,7 +79,6 @@ kubectl get pod -w
 kubectl logs mongodb-backup-28383184-vv9wl
 kubectl delete cronjobs.batch  mongodb-backup-bucket 
 
-
 #### Modification sur commit ####
 
 # modifier par exemple mongodb-backup-cronjob-bucket.yaml et passer le cron a toutes les 2 heures
