@@ -11,10 +11,10 @@ jobs:
       matrix:
         include:
           - name: front
-            directory: ./frontend
+            directory: ./applications/frontend
             image: atos06/gke-vue
           - name: api-node
-            directory: ./node-api
+            directory: ./applications/node-api
             image: atos06/gke-node-api
 
     steps:

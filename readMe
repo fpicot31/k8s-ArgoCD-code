@@ -1,5 +1,8 @@
+## connection sur GCP ####
 
+# aller sur https://console.glood.com  avec login : compte google
 
+<<<<<<< Updated upstream
 # Tester l'application qui aune application front vue et une application backend node qui fournit l'API
 cd frontend
 npm install
@@ -8,25 +11,108 @@ npm run dev
 cd node_api
 npm install express
 npm start
+=======
+# creer un cluster kubernetes bouton CREER par defaut
 
-http://localhost:5173/
+# installer gcloud
+https://cloud.google.com/sdk/docs/install?hl=fr
+sudo apt-get update
+sudo apt-get install apt-transport-https ca-certificates gnupg curl sudo
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+sudo apt-get update && sudo apt-get install google-cloud-cli
+>>>>>>> Stashed changes
 
+# installer le plugin voir : https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke
+sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
 
+# connection au cluster - cliquer sur connect
+kubectl config get-contexts
+kubectl config current-context
+gcloud container clusters get-credentials cformidable --region europe-west1 --project tactile-flash-408507
+gcloud init // entrer choix 1
+gcloud container clusters get-credentials cformidable --region europe-west1 --project tactile-flash-408507
+
+<<<<<<< Updated upstream
 # Creation  des images sur dockerhub
 cd frontend
 docker build -t atos06/gke-vue .
 docker push atos06/gke-vue 
+=======
+>>>>>>> Stashed changes
 
-cd vue-jwt/node-api
-docker build -t atos06/gke-node-api .
-docker push atos06/gke-node-api
+#### installer argo  ####
+kubectl create namespace argocd
 
-# mise en place du CI/CD
-# faire un commit qui declenchera le github action docker-hub-infra.yml etrepo k8s-ArgoCD-code
-# ne pas oublier d'aller dans onglet setting->action->general->workflow permissions : selectionner Read write permissions
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+kubectl get all -n argocd
+
+# suivre installation  https://argo-cd.readthedocs.io/en/stable/cli_installation/
+curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
+rm argocd-linux-amd64
+
+# argocd fonctionne
+argocd
 
 
-# si on veut tester le container dockerhub. Par exemple
-docker run --rm -d --name test1 -p 8085:80  atos06/gke-vue:d26b1a7
-# puis localhost:8085
+### creer premiere applicaiton argo ####
 
+# ouvvri l'appli dans le navigateur
+kubectl port-forward  -n argocd services/argocd-server 8080:443
+argocd admin initial-password -n argocd
+https://localhost:8080  // login : admin
+
+# recuperer le mot de password
+kubectl get secrets -n argocd argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+
+# creer l'application
+cd k8s
+kubectl apply -f application.yaml 
+
+# Ouvrir le dashboard : voir les logs, les evts, etc
+# on peut faire un test en supprimant un service
+kubectl delete service/frontend-service 
+# on voit qu il est immediatment recreer dans argo CD
+
+# lancer le cron de backup
+kubectl apply -f mongodb-backup-cronjob.yaml 
+kubectl get cronjob.batch mongodb-backup  # attendre qu'il soit actif=1
+kubectl get pod -w
+kubectl logs mongodb-backup-28383184-vv9wl
+kubectl delete cronjobs.batch  mongodb-backup 
+
+
+#### creation d'un dump stocker dans le cloud ####
+
+# creer un bucket : voir doc 
+
+# creer un compte de service
+gcloud iam service-accounts create  cronjob-mongodb
+
+# recuperer l'id du projet apres le @
+gcloud iam service-accounts list
+
+# affecter les droits sur ce compte
+gcloud projects add-iam-policy-binding composite-jetty-134823 --member='serviceAccount:cronjob-mongodb@composite-jetty-134823.iam.gserviceaccount.com' --role='roles/storage.admin'
+
+# generer la cle dans un fichier json
+gcloud iam service-accounts keys create --iam-account cronjob-mongodb@composite-jetty-134823.iam.gserviceaccount.com service-account.json
+cat service-account.json
+kubectl create secret generic gcs-credentials --from-file service-account.json
+
+# lancer le cron de backup
+kubectl apply -f mongodb-backup-cronjob-bucket.yaml 
+kubectl get cronjob.batch mongodb-backup-bucket  # attendre qu'il soit actif=1
+kubectl get pod -w
+kubectl logs mongodb-backup-28383184-vv9wl
+kubectl delete cronjobs.batch  mongodb-backup-bucket 
+
+
+#### Modification sur commit ####
+
+# modifier par exemple mongodb-backup-cronjob-bucket.yaml et passer le cron a toutes les 2 heures
+schedule: "0 2 * * *"
+commiter mongodb-backup-cronjob-bucket.yaml
+retourner sur argo et attenre un peu : on voit la sycnro sur le dernier commit.
+Ouvrir le log du cron mongodb-backup-bucket. A le fin voir le nouveau schedule 
