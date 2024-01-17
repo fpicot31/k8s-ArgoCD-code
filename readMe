@@ -2,26 +2,6 @@
 
 # aller sur https://console.glood.com  avec login : compte google
 
-<<<<<<< Updated upstream
-# Tester l'application qui aune application front vue et une application backend node qui fournit l'API
-cd frontend
-npm install
-npm run dev
-
-cd node_api
-npm install express
-npm start
-=======
-# creer un cluster kubernetes bouton CREER par defaut
-
-# installer gcloud
-https://cloud.google.com/sdk/docs/install?hl=fr
-sudo apt-get update
-sudo apt-get install apt-transport-https ca-certificates gnupg curl sudo
-echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-sudo apt-get update && sudo apt-get install google-cloud-cli
->>>>>>> Stashed changes
-
 # installer le plugin voir : https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke
 sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
 
@@ -32,19 +12,10 @@ gcloud container clusters get-credentials cformidable --region europe-west1 --pr
 gcloud init // entrer choix 1
 gcloud container clusters get-credentials cformidable --region europe-west1 --project tactile-flash-408507
 
-<<<<<<< Updated upstream
-# Creation  des images sur dockerhub
-cd frontend
-docker build -t atos06/gke-vue .
-docker push atos06/gke-vue 
-=======
->>>>>>> Stashed changes
 
 #### installer argo  ####
 kubectl create namespace argocd
-
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-
 kubectl get all -n argocd
 
 # suivre installation  https://argo-cd.readthedocs.io/en/stable/cli_installation/
@@ -85,7 +56,7 @@ kubectl delete cronjobs.batch  mongodb-backup
 
 #### creation d'un dump stocker dans le cloud ####
 
-# creer un bucket : voir doc 
+# creer un bucket dans gcp : voir doc 
 
 # creer un compte de service
 gcloud iam service-accounts create  cronjob-mongodb
