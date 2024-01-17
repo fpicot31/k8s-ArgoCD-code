@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: atos06/gke-vue:157786b
+          image: atos06/gke-vue:32a2408
           ports:
             - containerPort: 80
           volumeMounts:
